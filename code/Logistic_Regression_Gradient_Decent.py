@@ -1,8 +1,4 @@
 
-# coding: utf-8
-
-# In[1]:
-
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -10,59 +6,41 @@ import matplotlib.pyplot as plt
 from patsy import dmatrices
 
 
-# In[2]:
-
 data = pd.read_csv("../data/gradient_descent_data.csv") 
 
-
-# In[4]:
 
 data.head()
 
 
-# In[9]:
-
 type(data.left[0])
 
 
-# In[10]:
-
 data.rename(columns={"average_montly_hours":"average_monthly_hours"}, inplace = True)
 
-
-# In[11]:
 
 data.head()
 
 
 # # Convert data to two Dataframe's with left as y, other columns as X, also encode the categorial features
 
-# In[16]:
+y, X = dmatrices("left~satisfaction_level+last_evaluation+number_project+\
+average_monthly_hours+time_spend_company+Work_accident+\
+promotion_last_5years+C(sales)+C(salary)", data, return_type="dataframe")
 
-y, X = dmatrices("left~satisfaction_level+last_evaluation+number_project+average_monthly_hours+time_spend_company+Work_accident+promotion_last_5years+C(sales)+C(salary)", data, return_type="dataframe")
-
-
-# In[17]:
 
 type(X), type(y)
 
 
 # Convert X, y as numpy matrix and ndArray
 
-# In[18]:
-
 X = np.asmatrix(X)
 y = np.ravel(y)
 
-
-# In[19]:
 
 type(X), type(y)
 
 
 # # Data nomalization of X to ([0,1))
-
-# In[22]:
 
 for i in range(1, X.shape[1]):
     xmin = X[:, i].min()
@@ -70,14 +48,10 @@ for i in range(1, X.shape[1]):
     X[:, i] = (X[:,i] - xmin)/(xmax-xmin)
 
 
-# In[24]:
-
 X
 
 
 # Create an array of randome number, the same size of the number of features
-
-# In[26]:
 
 np.random.seed(1)
 alpha = 1
@@ -87,8 +61,6 @@ beta
 
 
 # # Definition of gradient decent
-
-# In[34]:
 
 # do 500 steps of gradient decent
 for T in range(500):
@@ -123,7 +95,6 @@ for T in range(500):
 
 # ending Loss = 0.43154384232365245 error_rate = 0.2058803920261351
 
-# In[ ]:
 
 
 
